@@ -1,20 +1,21 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import rootReducer from "./reducers";
+import { createStore, combineReducers } from 'redux';
+// import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore, persistReducer } from 'redux-persist';
+import myReducer from './reducers';
+import storage from "redux-persist/lib/storage"
 
+// import rootReducer from './rootReducer';
 const persistConfig = {
-  key: "root", 
-  storage,
-};
+    key: "SS",
+    storage,
+}
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const rootReducer = combineReducers({ data: myReducer });
 
-const store = configureStore({
-  reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== "production",
-});
+export const store = createStore(
+    persistReducer(persistConfig, rootReducer),
+    // composeWithDevTools(),
+);
 
-const persistedStore = persistStore(store);
 
-export { store, persistedStore };
+export const presisted = persistStore(store);

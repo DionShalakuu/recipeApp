@@ -3,7 +3,7 @@
 import { ADD_TO_FAVORITES } from './actions';
 
 const initialState = {
-    favorites: []
+    favorites: [] // Ensure favorites is initialized as an array
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
         case ADD_TO_FAVORITES:
             return {
                 ...state,
-                favorites: [...state.favorites, action.payload]
+                favorites: Array.isArray(state.favorites) ? [...state.favorites, action.payload] : [action.payload]
             };
         default:
             return state;

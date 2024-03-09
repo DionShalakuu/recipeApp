@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from "../../axios";
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToFavorites } from '../../redux/actions';
 
-const Homepage = () => {
+const Homepage = (props) => {
+    console.log("props",props)
     
     const dispatch = useDispatch();
 
@@ -30,9 +31,9 @@ const Homepage = () => {
         })
       }
 
-      const handleAddToFavorites = (recipe) => {
-        dispatch(addToFavorites(recipe));
-    };
+    //   const handleAddToFavorites = (recipe) => {
+    //     dispatch(addToFavorites(recipe));
+    // };
 
 
       const handleSearch = (e) =>{
@@ -79,7 +80,7 @@ const Homepage = () => {
                                 <hr/>
                                 <p className="card-title">{recipe?.instructions}</p>
                                 <button className="btn btn-primary" onClick={() => openRecipeDetails(recipe)}>View Details</button>
-                                <button className="btn btn-primary" onClick={() => handleAddToFavorites(recipe)}>Add to Favorites</button>
+                                <button className="btn btn-primary" onClick={() => props?.addToFavorites(recipe)}>Add to Favorites</button>
                             </div>
                         </div>
                     </div>
@@ -112,4 +113,18 @@ const Homepage = () => {
     );
 }
 
-export default Homepage;
+const mapStateToProps = (state) => {
+    console.log("tes ]t state", state)
+    return {
+       favorites: state.favorites
+
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        addToFavorites: (data) => dispatch(addToFavorites(data)),
+      // loadingOff: () => dispatch(loadingOff()),
+    };
+  };
+  export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

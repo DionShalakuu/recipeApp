@@ -1,19 +1,23 @@
-import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
+// REDUX
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import rootReducer from './redux/reducers'; // Assuming you have a root reducer
+import { PersistGate } from 'redux-persist/integration/react'
+import {store, presisted} from './redux/store';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
-import App from './App'; // Assuming App is the root component of your application
-
-const store = createStore(rootReducer);
-
-ReactDOM.render(
+// React 18 Render Method
+const container = document.getElementById('root');
+const root = createRoot(container); 
+root.render(  
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById('root')
+   <PersistGate loading={null} persistor={presisted}>  
+      <BrowserRouter>
+        <App />
+        </BrowserRouter>
+   </PersistGate>
+ </Provider>
+
 );
