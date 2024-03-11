@@ -8,6 +8,7 @@ import AddRecipeModal from './components/modals/addRecipte';
 import { useState } from 'react';
 import SinglePage from './pages/homepage/singlePage';
 import Favorites from './pages/favorite/favorites';
+import Ingredient from './components/ingredient/ingredient';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +28,7 @@ function App() {
         <Route exact path="/" element={<Homepage />} />
         <Route exact path="recipe/:id" element={<SinglePage />} />
         <Route exact path="favorites" element={<Favorites />} />
+        <Route exact path="ingredient" element={<Ingredient />} />
 
       </Routes>
       {/* <header className="App-header">

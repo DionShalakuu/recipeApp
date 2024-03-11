@@ -5,10 +5,6 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToFavorites } from '../../redux/actions';
 
 const Homepage = (props) => {
-    console.log("props",props)
-    
-    const dispatch = useDispatch();
-
     
     
     const [searchData,setSearchData] = useState();
@@ -36,14 +32,18 @@ const Homepage = (props) => {
     // };
 
 
-      const handleSearch = (e) =>{
+    const handleSearch = (e) => {
         e.preventDefault();
-        axios.get(`recipe/ingredient/${e.target.value}`).then(data => {
-            setSearchData(data.data);
-            console.log("data",data)
-        }).catch(err => {
-          console.log(err);
-        })}
+        const ingredients = e.target.value.split(","); 
+        axios.get(`recipe/ingredients?ingredients=${ingredients.join(",")}`)
+            .then(data => {
+                setSearchData(data.data);
+                console.log("data", data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
 
 
       useEffect(()=>{
@@ -54,8 +54,8 @@ const Homepage = (props) => {
         <div className="container mt-5">
             <h1 className="text-center mb-4">Recipes</h1>
                 <div className='my-4'>
-               <span>Search Recipe</span>
-                <input class="form-control mr-sm-2 w-100 mx-auto " type="search" placeholder="Search" onChange={(e)=>handleSearch(e)}/>
+               <span>Search Recipe by ingredient</span>
+                <input class="form-control mr-sm-2 w-100 mx-auto " type="search" placeholder="e.g., garlic, broccoli" onChange={(e)=>handleSearch(e)}/>
              
                 </div>
             {searchData?.map((el)=>{
@@ -79,8 +79,10 @@ const Homepage = (props) => {
                                 <p className="card-title">{recipe?.description}</p>
                                 <hr/>
                                 <p className="card-title">{recipe?.instructions}</p>
+                                <div className='d-flex justify-content-between'>
                                 <button className="btn btn-primary" onClick={() => openRecipeDetails(recipe)}>View Details</button>
-                                <button className="btn btn-primary" onClick={() => props?.addToFavorites(recipe)}>Add to Favorites</button>
+                                <button className="btn btn-success" onClick={() => props?.addToFavorites(recipe)}>Add to Favorites</button>
+                                    </div>
                             </div>
                         </div>
                     </div>
